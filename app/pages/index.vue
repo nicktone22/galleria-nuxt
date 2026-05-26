@@ -34,7 +34,7 @@ const artworks = computed(() => {
       <p class="eyebrow">Contemporary Art Gallery</p>
 
       <h1>
-        See the future of art
+        See the future of art gallery
       </h1>
 
       <p class="hero-text">
