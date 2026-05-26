@@ -3,7 +3,7 @@ const route = useRoute()
 const router = useRouter()
 const { find } = useStrapiApi()
 
-const pageSize = 30
+const pageSize = 80
 
 const config = useRuntimeConfig()
 
