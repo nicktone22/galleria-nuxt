@@ -3,14 +3,12 @@ const props = defineProps<{
   artwork: any
 }>()
 
+const localePath = useLocalePath()
+
 const { getMediaUrl } = useStrapiMedia()
 const { tArtworkValue } = useArtworkI18n()
 
-const config = useRuntimeConfig()
-
-const currentLocale = computed(() => {
-  return config.public.defaultLocale || 'it'
-})
+const { currentLocale } = useCurrentLocale()
 
 function getArtworkTitle(artwork: any) {
   return artwork?.title ||
@@ -150,7 +148,7 @@ const artworkType = computed(() => {
 <template>
   <article class="artwork-card">
     <NuxtLink
-      :to="`/opere/${getArtworkSlug(artwork)}`"
+      :to="localePath(`/opere/${getArtworkSlug(artwork)}`)"
       class="artwork-link"
     >
       <div class="artwork-image">
@@ -172,7 +170,7 @@ const artworkType = computed(() => {
         <div class="artwork-meta">
           <NuxtLink
             v-if="primaryArtist"
-            :to="`/artisti/${getRelationSlug(primaryArtist)}`"
+            :to="localePath(`/artisti/${getRelationSlug(primaryArtist)}`)"
             class="artist-link"
             @click.stop
           >

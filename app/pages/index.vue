@@ -1,10 +1,8 @@
 <script setup lang="ts">
-const config = useRuntimeConfig()
+const { t } = useI18n()
+const { currentLocale } = useCurrentLocale()
 const { find } = useStrapiApi()
-
-const currentLocale = computed(() => {
-  return config.public.defaultLocale || 'it'
-})
+const localePath = useLocalePath()
 
 const { data: artworksData } = await useAsyncData(
   () => `home-artworks-${currentLocale.value}`,
@@ -20,7 +18,10 @@ const { data: artworksData } = await useAsyncData(
       'pagination[pageSize]': 6,
 
       'sort[0]': 'createdAt:desc'
-    })
+    }),
+  {
+    watch: [currentLocale]
+  }
 )
 
 const artworks = computed(() => {
@@ -31,24 +32,23 @@ const artworks = computed(() => {
 <template>
   <main>
     <section class="hero">
-      <p class="eyebrow">Contemporary Art Gallery</p>
+      <p class="eyebrow">{{ t('home.eyebrow') }}</p>
 
       <h1>
-        See the future of art gallery
+        {{ t('home.title') }}
       </h1>
 
       <p class="hero-text">
-        Il tuo tempo è limitato, quindi non sprecarlo vivendo la vita di qualcun altro.
-        Non farti intrappolare dalle convenzioni, ma scopri la visione unica e la creatività dell'arte altrui.
+        {{ t('home.text') }}
       </p>
 
       <div class="hero-actions">
-        <NuxtLink to="/opere" class="button primary">
-          Esplora le opere
+        <NuxtLink :to="localePath('/opere')" class="button primary">
+          {{ t('home.primaryCta') }}
         </NuxtLink>
 
-        <NuxtLink to="/artisti" class="button secondary">
-          Vedi gli artisti
+        <NuxtLink :to="localePath('/artisti')" class="button secondary">
+          {{ t('home.secondaryCta') }}
         </NuxtLink>
       </div>
     </section>
@@ -56,12 +56,12 @@ const artworks = computed(() => {
     <section class="section">
       <div class="section-heading">
         <div>
-          <p class="eyebrow">In evidenza</p>
-          <h2>Ultime opere</h2>
+          <p class="eyebrow">{{ t('home.featured') }}</p>
+          <h2>{{ t('home.latestArtworks') }}</h2>
         </div>
 
-        <NuxtLink to="/opere" class="section-link">
-          Tutte le opere
+        <NuxtLink :to="localePath('/opere')" class="section-link">
+          {{ t('home.allArtworks') }}
         </NuxtLink>
       </div>
 

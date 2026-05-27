@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const route = useRoute()
-const config = useRuntimeConfig()
+const { currentLocale } = useCurrentLocale()
 
 const { find } = useStrapiApi()
 const { getMediaUrl } = useStrapiMedia()
@@ -9,10 +9,6 @@ const { getEnumLabels } = useStrapiEnums()
 const { tArtworkField, tArtworkSection, tArtworkValue } = useArtworkI18n()
 
 const slug = computed(() => String(route.params.slug || ''))
-
-const currentLocale = computed(() => {
-  return config.public.defaultLocale || 'it'
-})
 
 const isDetailsOpen = ref(false)
 

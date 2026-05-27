@@ -1,31 +1,35 @@
 <script setup lang="ts">
-const navItems = [
+const { t, locale } = useI18n()
+const localePath = useLocalePath()
+const switchLocalePath = useSwitchLocalePath()
+
+const navItems = computed(() => [
   {
-    label: 'Home',
-    to: '/'
+    label: t('nav.home'),
+    to: localePath('/')
   },
   {
-    label: 'Opere',
-    to: '/opere'
+    label: t('nav.artworks'),
+    to: localePath('/opere')
   },
   {
-    label: 'Artisti',
-    to: '/artisti'
+    label: t('nav.artists'),
+    to: localePath('/artisti')
   },
   {
-    label: 'Mostre',
-    to: '/mostre'
+    label: t('nav.exhibitions'),
+    to: localePath('/mostre')
   },
   {
-    label: 'Progetti',
-    to: '/progetti'
+    label: t('nav.projects'),
+    to: localePath('/progetti')
   }
-]
+])
 </script>
 
 <template>
   <header class="site-header">
-    <NuxtLink to="/" class="logo">
+    <NuxtLink :to="localePath('/')" class="logo">
       Thetis Gallery
     </NuxtLink>
 
@@ -39,6 +43,24 @@ const navItems = [
         {{ item.label }}
       </NuxtLink>
     </nav>
+
+    <div class="language-switcher">
+      <NuxtLink
+        :to="switchLocalePath('it')"
+        class="lang-link"
+        :class="{ active: locale === 'it' }"
+      >
+        IT
+      </NuxtLink>
+
+      <NuxtLink
+        :to="switchLocalePath('en')"
+        class="lang-link"
+        :class="{ active: locale === 'en' }"
+      >
+        EN
+      </NuxtLink>
+    </div>
   </header>
 </template>
 
@@ -95,5 +117,23 @@ const navItems = [
     flex-wrap: wrap;
     gap: 16px;
   }
+}
+
+.language-switcher {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lang-link {
+  color: #777;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.lang-link.active {
+  color: #111;
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 </style>

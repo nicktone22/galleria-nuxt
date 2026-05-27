@@ -5,11 +5,8 @@ const { find } = useStrapiApi()
 
 const pageSize = 80
 
-const config = useRuntimeConfig()
-
-const currentLocale = computed(() => {
-  return config.public.defaultLocale || 'it'
-})
+const { t } = useI18n()
+const { currentLocale } = useCurrentLocale()
 
 const currentPage = computed(() => {
   const page = Number(route.query.page || 1)
@@ -21,15 +18,18 @@ const { data, pending, error } = await useAsyncData(
   () =>
     find<any>('artworks', {
       locale: currentLocale.value,
+
       'populate[media][populate]': '*',
       'populate[artists][populate]': '*',
       'populate[details][populate]': '*',
+
       'pagination[page]': currentPage.value,
       'pagination[pageSize]': pageSize,
+
       'sort[0]': 'createdAt:desc'
     }),
   {
-    watch: [currentPage]
+    watch: [currentPage, currentLocale]
   }
 )
 
@@ -65,16 +65,15 @@ function goToPage(page: number) {
   <main class="page">
     <section class="page-heading">
       <p class="eyebrow">Archivio</p>
-      <h1>Opere</h1>
+      <h1>{{ t('archive.artworks') }}</h1>
 
       <p class="summary">
-        {{ pagination.total }} opere trovate.
-        Pagina {{ pagination.page }} di {{ pagination.pageCount }}.
+        {{ pagination.total }} {{ t('archive.foundArtworks') }}.
       </p>
     </section>
 
     <section v-if="pending" class="state">
-      Caricamento opere...
+      {{ t('archive.loadingArtworks') }}
     </section>
 
     <section v-else-if="error" class="state error">
@@ -102,7 +101,7 @@ function goToPage(page: number) {
           :disabled="currentPage <= 1"
           @click="goToPage(currentPage - 1)"
         >
-          Precedente
+          {{ t('archive.previous') }}
         </button>
 
         <button
@@ -122,7 +121,7 @@ function goToPage(page: number) {
           :disabled="currentPage >= pageCount"
           @click="goToPage(currentPage + 1)"
         >
-          Successiva
+           {{ t('archive.next') }}
         </button>
       </nav>
     </section>
