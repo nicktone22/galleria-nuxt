@@ -24,14 +24,6 @@ export default defineNuxtConfig({
 
   ssr: true,
 
-  nitro: {
-    preset: 'static',
-    prerender: {
-      crawlLinks: true,
-      failOnError: false
-    }
-  },
-
   runtimeConfig: {
     strapiToken: '',
     strapiComponentsEndpoint: 'content-type-builder/components',
