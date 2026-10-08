@@ -1,4 +1,8 @@
-# Nuxt Minimal Starter
+# Thetis – Galleria (Nuxt)
+
+Frontend Nuxt della galleria Thetis, collegato a Strapi.
+
+> Test collegamento git: 2026-10-08
 
 Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
