@@ -1,3 +1,14 @@
+<script setup lang="ts">
+const { currentLocale } = useCurrentLocale()
+
+useHead({
+  title: 'Thetis Gallery',
+  htmlAttrs: {
+    lang: () => currentLocale.value
+  }
+})
+</script>
+
 <template>
   <div>
     <SiteHeader />

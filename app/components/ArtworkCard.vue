@@ -7,8 +7,17 @@ const localePath = useLocalePath()
 
 const { getMediaUrl } = useStrapiMedia()
 const { tArtworkValue } = useArtworkI18n()
+const { getEnumLabels } = useStrapiEnums()
 
 const { currentLocale } = useCurrentLocale()
+
+/**
+ * Etichette enum da Strapi (stessa chiave della pagina opera: dati condivisi)
+ */
+const { data: enumLabelsData } = useAsyncData(
+  () => `enum-labels-${currentLocale.value}`,
+  () => getEnumLabels(currentLocale.value)
+)
 
 function getArtworkTitle(artwork: any) {
   return artwork?.title ||
@@ -141,57 +150,63 @@ const artworkType = computed(() => {
     props.artwork?.attributes?.category ||
     ''
 
-  return value ? tArtworkValue(value, currentLocale.value) : ''
+  if (!value) return ''
+
+  return enumLabelsData.value?.artwork_type?.[value] ||
+    tArtworkValue(value, currentLocale.value)
 })
 </script>
 
 <template>
   <article class="artwork-card">
-    <NuxtLink
-      :to="localePath(`/opere/${getArtworkSlug(artwork)}`)"
-      class="artwork-link"
-    >
-      <div class="artwork-image">
-        <img
-          v-if="getArtworkImage(artwork)"
-          :src="getArtworkImage(artwork) || ''"
-          :alt="getArtworkTitle(artwork)"
-          loading="lazy"
-        >
+    <div class="artwork-image">
+      <img
+        v-if="getArtworkImage(artwork)"
+        :src="getArtworkImage(artwork) || ''"
+        :alt="getArtworkTitle(artwork)"
+        loading="lazy"
+      >
 
-        <span v-else>
-          Opera
+      <span v-else>
+        Opera
+      </span>
+    </div>
+
+    <div class="artwork-content">
+      <h3>
+        <!-- Il link copre tutta la card via ::after: niente <a> annidati -->
+        <NuxtLink
+          :to="localePath(`/opere/${getArtworkSlug(artwork)}`)"
+          class="artwork-link"
+        >
+          {{ getArtworkTitle(artwork) }}
+        </NuxtLink>
+      </h3>
+
+      <div class="artwork-meta">
+        <NuxtLink
+          v-if="primaryArtist"
+          :to="localePath(`/artisti/${getRelationSlug(primaryArtist)}`)"
+          class="artist-link"
+        >
+          {{ getRelationTitle(primaryArtist) }}
+        </NuxtLink>
+
+        <span v-if="year">
+          {{ year }}
+        </span>
+
+        <span v-if="artworkType">
+          {{ artworkType }}
         </span>
       </div>
-
-      <div class="artwork-content">
-        <h3>{{ getArtworkTitle(artwork) }}</h3>
-
-        <div class="artwork-meta">
-          <NuxtLink
-            v-if="primaryArtist"
-            :to="localePath(`/artisti/${getRelationSlug(primaryArtist)}`)"
-            class="artist-link"
-            @click.stop
-          >
-            {{ getRelationTitle(primaryArtist) }}
-          </NuxtLink>
-
-          <span v-if="year">
-            {{ year }}
-          </span>
-
-          <span v-if="artworkType">
-            {{ artworkType }}
-          </span>
-        </div>
-      </div>
-    </NuxtLink>
+    </div>
   </article>
 </template>
 
 <style scoped>
 .artwork-card {
+  position: relative;
   overflow: hidden;
   border: 1px solid #e8e8e8;
   border-radius: 18px;
@@ -205,9 +220,15 @@ const artworkType = computed(() => {
 }
 
 .artwork-link {
-  display: block;
   color: inherit;
   text-decoration: none;
+}
+
+.artwork-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
 }
 
 .artwork-image {

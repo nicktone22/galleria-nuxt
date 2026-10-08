@@ -27,6 +27,11 @@ const { data: artworksData } = await useAsyncData(
 const artworks = computed(() => {
   return (artworksData.value?.data || []).slice(0, 6)
 })
+
+useSeoMeta({
+  title: () => `Thetis Gallery | ${t('home.eyebrow')}`,
+  description: () => t('home.text')
+})
 </script>
 
 <template>

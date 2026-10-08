@@ -59,6 +59,10 @@ function goToPage(page: number) {
     }
   })
 }
+
+useSeoMeta({
+  title: () => `${t('archive.artworks')} | Thetis Gallery`
+})
 </script>
 
 <template>
