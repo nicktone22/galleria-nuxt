@@ -1,11 +1,17 @@
 <script setup lang="ts">
 const { currentLocale } = useCurrentLocale()
+const config = useRuntimeConfig()
+
+const noindex = String(config.public.noindex) === 'true'
 
 useHead({
   title: 'Thetis Gallery',
   htmlAttrs: {
     lang: () => currentLocale.value
-  }
+  },
+  meta: noindex
+    ? [{ name: 'robots', content: 'noindex, nofollow' }]
+    : []
 })
 </script>
 

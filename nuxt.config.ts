@@ -32,7 +32,9 @@ export default defineNuxtConfig({
     public: {
       strapiUrl: '',
       siteUrl: '',
-      defaultLocale: 'it'
+      defaultLocale: 'it',
+      // true sui siti di test (env NUXT_PUBLIC_NOINDEX=true): esclude il sito dai motori di ricerca
+      noindex: false
     }
   },
 
