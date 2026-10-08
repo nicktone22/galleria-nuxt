@@ -14,7 +14,7 @@ export default defineI18nConfig(() => ({
       },
       home: {
         eyebrow: 'Contemporary Art Gallery',
-        title: 'See the future of artt',
+        title: 'See the future of art',
         text: 'Il tuo tempo è limitato, quindi non sprecarlo vivendo la vita di qualcun altro. Non farti intrappolare dalle convenzioni, ma scopri la visione unica e la creatività dell’arte altrui.',
         primaryCta: 'Esplora le opere',
         secondaryCta: 'Vedi gli artisti',
@@ -58,7 +58,7 @@ export default defineI18nConfig(() => ({
       },
       home: {
         eyebrow: 'Contemporary Art Gallery',
-        title: 'See the future of artt',
+        title: 'See the future of art',
         text: 'Your time is limited, so do not waste it living someone else’s life. Discover the unique vision and creativity of contemporary art.',
         primaryCta: 'Explore artworks',
         secondaryCta: 'View artists',
